@@ -4,43 +4,35 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-/*
- * Serializable
- * É uma interface que diz que os objetos poderão ser Byte
- */
 @Entity
-public class Categoria implements Serializable{
-	
+public class Estado implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	@Column()
 	private String nome;
 	
-	@JsonManagedReference // tras os objetos referenciados dessa classe (resolve o problema de referência cruzada)
-	@ManyToMany(mappedBy="categorias") // referencia a lista categorias da outra classe
-	private List<Produto> produtos = new ArrayList<>();
-	
-	public Categoria() {
-		
+	@OneToMany(mappedBy="estado")
+	private List<Cidade> cidades = new ArrayList<>();
+
+	public Estado() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Categoria(Integer id, String nome) {
+	public Estado(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -57,23 +49,17 @@ public class Categoria implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public List<Produto> getProdutos() {
-		return produtos;
+
+	public List<Cidade> getCidades() {
+		return cidades;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}	
-	
-	
-	/*
-	 * hashCode() e equals(Object obj)
-	 * São necessários para que dois objetos sejam comparados pelo seu conteúdo e não pelo ponteiro de memória,
-	 * geralmete é utilizado apenas o id.
-	 */
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
+	}
+
 	@Override
-	public int hashCode() { 
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -88,13 +74,15 @@ public class Categoria implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Estado other = (Estado) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
+	} 
+	
+	
 
 }

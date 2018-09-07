@@ -1,4 +1,4 @@
-package com.fernandotozetto.cursomc.domain;
+	package com.fernandotozetto.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,10 +26,10 @@ public class Produto implements Serializable{
 	private Double preco;
 	
 	@JsonBackReference // da um basta no looping de referência cruzada que iniciou no outro objeto
-	@ManyToMany
-	@JoinTable(name="PRODUTO_CATEGORIA",
-			   joinColumns=@JoinColumn(name="produto_id"),
-			   inverseJoinColumns=@JoinColumn(name="categoria_id")
+	@ManyToMany // Relacionamento muitos para muitos 
+	@JoinTable(name="PRODUTO_CATEGORIA", // Nome da Tabela que guarda os IDs
+			   joinColumns=@JoinColumn(name="produto_id"), // ID dessa tabela
+			   inverseJoinColumns=@JoinColumn(name="categoria_id") // ID da outra tabela
 	)
 	private List<Categoria> categorias = new ArrayList<>();
 	

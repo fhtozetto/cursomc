@@ -12,7 +12,7 @@ import com.fernandotozetto.cursomc.services.exceptions.ObjectNotFoundException;
 @Service
 public class CategoriaService {
 	
-	@Autowired // cria o objeto automaticamente por injeção de dependencia.
+	@Autowired // cria o objeto automaticamente por injeção de dependência ou inversão de controle.
 	private CategoriaRepository repo;
 	
 	public Categoria buscar(Integer id) {

@@ -14,7 +14,7 @@ import com.fernandotozetto.cursomc.services.CategoriaService;
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
 	
-	@Autowired
+	@Autowired // cria o objeto automaticamente por injeção de dependência ou inversão de controle.
 	private CategoriaService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)

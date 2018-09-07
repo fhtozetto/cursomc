@@ -1,46 +1,38 @@
 package com.fernandotozetto.cursomc.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-/*
- * Serializable
- * É uma interface que diz que os objetos poderão ser Byte
- */
 @Entity
-public class Categoria implements Serializable{
-	
+public class Cidade implements Serializable{
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	@Column()
 	private String nome;
 	
-	@JsonManagedReference // tras os objetos referenciados dessa classe (resolve o problema de referência cruzada)
-	@ManyToMany(mappedBy="categorias") // referencia a lista categorias da outra classe
-	private List<Produto> produtos = new ArrayList<>();
-	
-	public Categoria() {
-		
+	@ManyToOne
+	@JoinColumn(name="estado_id") // chave estrangeira
+	private Estado estado;
+
+	public Cidade() {
+		super();
 	}
 
-	public Categoria(Integer id, String nome) {
+	public Cidade(Integer id, String nome, Estado estado) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.estado = estado;
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -57,23 +49,17 @@ public class Categoria implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public List<Produto> getProdutos() {
-		return produtos;
+
+	public Estado getEstado() {
+		return estado;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}	
-	
-	
-	/*
-	 * hashCode() e equals(Object obj)
-	 * São necessários para que dois objetos sejam comparados pelo seu conteúdo e não pelo ponteiro de memória,
-	 * geralmete é utilizado apenas o id.
-	 */
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
 	@Override
-	public int hashCode() { 
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -88,7 +74,7 @@ public class Categoria implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -96,5 +82,6 @@ public class Categoria implements Serializable{
 			return false;
 		return true;
 	}
-
+	
+	
 }
