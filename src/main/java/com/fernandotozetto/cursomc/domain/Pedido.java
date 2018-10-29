@@ -37,7 +37,7 @@ public class Pedido implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="endereco_de_entrega_id")
-	private Endereco endereco;
+	private Endereco enderecoDeEntrega;
 	
 	@OneToMany(mappedBy="id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
@@ -46,12 +46,12 @@ public class Pedido implements Serializable{
 		super();
 	}
 
-	public Pedido(Integer id, Date instante, Cliente cliente, Endereco endereco) {
+	public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega) {
 		super();
 		this.id = id;
 		this.instante = instante;
 		this.cliente = cliente;
-		this.endereco = endereco;
+		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 	
 	public double getValorTotal() {
@@ -94,12 +94,12 @@ public class Pedido implements Serializable{
 		this.cliente = cliente;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
+	public Endereco getEnderecoDeEntrega() {
+		return enderecoDeEntrega;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
+		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 
 	public Set<ItemPedido> getItens() {
