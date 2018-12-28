@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fernandotozetto.cursomc.security.JWTAuthenticationFilter;
+import com.fernandotozetto.cursomc.security.JWTAuthorizationFilter;
 import com.fernandotozetto.cursomc.security.JWTUtil;
 
 @Configuration
@@ -61,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers(PUBLIC_MATCHERS).permitAll() // todos os caminhos que estiverem no "PUBLIC_MATCHERS" estão permitidos
 			.anyRequest().authenticated(); // para todo o resto é exigido altenticação.
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));// registra o filtro de autenticação.
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));// Autoria a ação do usuario.
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // usada para asegurar que nosso backend não irá criar sessão de usuário.
 	}
 	
