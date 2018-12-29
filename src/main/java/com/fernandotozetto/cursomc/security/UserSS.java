@@ -68,4 +68,8 @@ private static final long serialVersionUID = 1L;
 	public boolean isEnabled() { // o usuario está habilitado?
 		return true; // por enquanto sempre verdadeiro!
 	}
+	
+	public boolean hasRole(Perfil perfil) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
 }
