@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,6 +25,7 @@ import com.fernandotozetto.cursomc.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 /*
  * Essa Classe é responsável por definir o que está liberado por padrão 
@@ -45,7 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	private static final String[] PUBLIC_MATCHERS_GET = { // caminhos que estão liberados apenas para leitura
 			"/produtos/**",
-			"/categorias/**",
+			"/categorias/**"
+	};
+	
+	private static final String[] PUBLIC_MATCHERS_POST = { // caminhos que estão liberados apenas para Cadastro
 			"/clientes/**"
 	};
 
@@ -58,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		http.cors().and().csrf().disable(); //chama o "corsConfigurationSource" caso esteja definido como está // como não armazena seção foi desabilitado o "csrf"
 		http.authorizeRequests() 
+			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll() // Será permitido cadastrar o cliente, afinal ele fara seu auto cadastro
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() // todos os GETs que estiverem no "PUBLIC_MATCHERS_GET" estão permitidos
 			.antMatchers(PUBLIC_MATCHERS).permitAll() // todos os caminhos que estiverem no "PUBLIC_MATCHERS" estão permitidos
 			.anyRequest().authenticated(); // para todo o resto é exigido altenticação.
