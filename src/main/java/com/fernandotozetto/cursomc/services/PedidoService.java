@@ -4,9 +4,13 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fernandotozetto.cursomc.domain.Cliente;
 import com.fernandotozetto.cursomc.domain.ItemPedido;
 import com.fernandotozetto.cursomc.domain.PagamentoComBoleto;
 import com.fernandotozetto.cursomc.domain.Pedido;
@@ -14,6 +18,8 @@ import com.fernandotozetto.cursomc.domain.enums.EstadoPagamento;
 import com.fernandotozetto.cursomc.repositories.ItemPedidoRepository;
 import com.fernandotozetto.cursomc.repositories.PagamentoRepository;
 import com.fernandotozetto.cursomc.repositories.PedidoRepository;
+import com.fernandotozetto.cursomc.security.UserSS;
+import com.fernandotozetto.cursomc.services.exceptions.AuthorizationException;
 import com.fernandotozetto.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -69,6 +75,16 @@ public class PedidoService {
 		itemPedidoRepository.saveAll(obj.getItens());
 		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
+	}
+	
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated(); // tras o usuário logado
+		if (user == null) { // se não localizado lança o erro "Acesso negado"
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente =  clienteService.find(user.getId());
+		return repo.findByCliente(cliente, pageRequest);
 	}
 
 }
