@@ -47,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	private static final String[] PUBLIC_MATCHERS_GET = { // caminhos que estão liberados apenas para leitura
 			"/produtos/**",
-			"/categorias/**"
+			"/categorias/**",
+			"/estados/**"
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_POST = { // caminhos que estão liberados apenas para Cadastro
